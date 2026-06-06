@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Manager — PizzaShop{% endblock %}
+{% block content %}
+{% if view == "login" %}
+<section class="section card-panel">
+  <header class="section-header">
+    <h1>Manager Login</h1>
+    <p>Enter the manager password (default: <strong>manager1</strong>).</p>
+  </header>
+  <form class="form-grid" action="{{ url_for('manage_login') }}" method="post">
+    <div class="form-field">
+      <label for="password">Manager password</label>
+      <input id="password" name="password" type="password" required autofocus />
+    </div>
+    <div class="form-actions full-width">
+      <button type="submit" class="button button-primary">Login</button>
+    </div>
+  </form>
+</section>
+{% elif view == "logged_in" %}
+<section class="section card-panel">
+  <header class="section-header">
+    <h1>Manager dashboard</h1>
+    <p>Review customer orders, handle refunds, and update menu items.</p>
+  </header>
+  <div class="manager-toolbar">
+    <a class="button button-primary" href="{{ url_for('manage_orders') }}">Order history</a>
+    <a class="button button-primary" href="{{ url_for('manage_menu') }}">Edit menu</a>
+    <a class="button button-secondary" href="{{ url_for('manage_logout') }}">Logout</a>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

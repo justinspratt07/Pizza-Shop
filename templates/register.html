@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Create Account — PizzaShop{% endblock %}
+{% block content %}
+<section class="section card-panel">
+  <header class="section-header">
+    <h1>Create your account</h1>
+    <p>Register and save your preferences for faster ordering.</p>
+  </header>
+  <nav class="local-nav" aria-label="Account pages">
+    <a href="{{ url_for('register') }}" class="active">Register</a>
+    <a href="{{ url_for('login') }}">Login</a>
+  </nav>
+
+  <form class="form-grid" action="{{ url_for('register') }}" method="post" novalidate>
+    <div class="form-field">
+      <label for="full_name">Full name</label>
+      <input id="full_name" name="full_name" type="text" autocomplete="name" required />
+    </div>
+    <div class="form-field">
+      <label for="email">Email address</label>
+      <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-help email-status" />
+      <p id="email-help">We use your email to secure the account and send order updates.</p>
+      <p id="email-status" class="status-text" aria-live="polite"></p>
+    </div>
+    <div class="form-field">
+      <label for="phone">Phone number</label>
+      <input id="phone" name="phone" type="tel" autocomplete="tel" required />
+    </div>
+    <div class="form-field full-width">
+      <label for="address">Delivery address</label>
+      <input id="address" name="address" type="text" autocomplete="street-address" required />
+    </div>
+    <div class="form-field">
+      <label for="zip_code">Delivery ZIP code</label>
+      <input id="zip_code" name="zip_code" type="text" inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{5}(-[0-9]{4})?" required />
+    </div>
+    <div class="form-field">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="new-password" required minlength="8" />
+    </div>
+    <div class="form-field">
+      <label for="confirm_password">Confirm password</label>
+      <input id="confirm_password" name="confirm_password" type="password" autocomplete="new-password" required minlength="8" />
+    </div>
+    <div class="form-actions full-width">
+      <button type="submit" class="button button-primary">Create account</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

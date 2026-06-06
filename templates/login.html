@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Login — PizzaShop{% endblock %}
+{% block content %}
+<section class="section card-panel">
+  <header class="section-header">
+    <h1>Login to your account</h1>
+    <p>Enter the email and password you used during registration.</p>
+  </header>
+  <nav class="local-nav" aria-label="Account pages">
+    <a href="{{ url_for('register') }}">Register</a>
+    <a href="{{ url_for('login') }}" class="active">Login</a>
+  </nav>
+
+  <form class="form-grid" action="{{ url_for('login') }}" method="post" novalidate>
+    <div class="form-field">
+      <label for="email">Email address</label>
+      <input id="email" name="email" type="email" autocomplete="email" required />
+    </div>
+    <div class="form-field">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required />
+    </div>
+    <div class="form-actions full-width">
+      <button type="submit" class="button button-primary">Login</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

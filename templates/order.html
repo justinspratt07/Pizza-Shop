@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}Order — PizzaShop{% endblock %}
+{% block content %}
+<section class="section card-panel">
+  <header class="section-header">
+    <h1>Build your order</h1>
+    <p>Add menu items to the cart, then submit a mock payment. Use <strong>tok_success</strong> for approval or <strong>tok_fail</strong> for a failed payment.</p>
+  </header>
+
+  <div class="order-layout">
+    <section>
+      <h2>Menu</h2>
+      <div class="menu-grid">
+        {% for item in menu_items %}
+          <article class="menu-card">
+            <h3>{{ item.name }}</h3>
+            <p>{{ item.description }}</p>
+            <p><strong>{{ format_money(item.price) }}</strong></p>
+            <form action="{{ url_for('cart_add') }}" method="post" class="inline-form">
+              <input type="hidden" name="menu_item_id" value="{{ item.item_id }}" />
+              <label>
+                Quantity
+                <input type="number" name="quantity" min="1" value="1" required />
+              </label>
+              <button type="submit" class="button button-primary">Add</button>
+            </form>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <aside class="cart-panel">
+      <h2>Your cart</h2>
+      {% if cart_items %}
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Qty</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in cart_items %}
+              <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ format_money(item.line_total()) }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="totals">
+          <p><span>Subtotal</span><strong data-total="subtotal">{{ format_money(subtotal) }}</strong></p>
+          <p><span data-total-label="tax">Tax ({{ format_tax_rate(tax_rate) }})</span><strong data-total="tax">{{ format_money(tax) }}</strong></p>
+          <p><span>Total</span><strong data-total="total">{{ format_money(total) }}</strong></p>
+        </div>
+        <form action="{{ url_for('cart_clear') }}" method="post">
+          <button type="submit" class="button button-secondary">Clear Cart</button>
+        </form>
+      {% else %}
+        <p>Your cart is empty.</p>
+      {% endif %}
+    </aside>
+  </div>
+</section>
+
+<section class="section card-panel">
+  <header class="section-header">
+    <h2>Checkout</h2>
+    <p>Customer information is validated before the order is created.</p>
+  </header>
+
+  <form class="form-grid" action="{{ url_for('checkout') }}" method="post">
+    <div class="form-field">
+      <label for="name">Customer name</label>
+      <input id="name" name="name" type="text" value="{{ user.full_name if user else '' }}" required />
+    </div>
+    <div class="form-field">
+      <label for="phone">Phone number</label>
+      <input id="phone" name="phone" type="tel" value="{{ user.phone if user else '' }}" required />
+    </div>
+    <div class="form-field full-width">
+      <label for="address">Delivery address</label>
+      <input id="address" name="address" type="text" value="{{ user.address if user else '' }}" required />
+    </div>
+    <div class="form-field">
+      <label for="zip_code">Delivery ZIP code</label>
+      <input id="zip_code" name="zip_code" type="text" inputmode="numeric" autocomplete="postal-code" pattern="[0-9]{5}(-[0-9]{4})?" value="{{ zip_code }}" required />
+    </div>
+    <div class="form-field full-width">
+      <label for="payment_token">Mock payment token</label>
+      <select id="payment_token" name="payment_token" required>
+        <option value="tok_success">tok_success — approve payment</option>
+        <option value="tok_fail">tok_fail — fail payment</option>
+      </select>
+    </div>
+    <div class="form-actions full-width">
+      <button type="submit" class="button button-primary">Place Order</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

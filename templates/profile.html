@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Profile — PizzaShop{% endblock %}
+{% block content %}
+<section class="section card-panel">
+  <header class="section-header">
+    <h1>Your profile</h1>
+    <p>Review your account details and log out when you're done.</p>
+  </header>
+
+  <div class="profile-grid">
+    <div class="profile-card">
+      <h2>{{ user.full_name }}</h2>
+      <p><strong>Email</strong><br>{{ user.email }}</p>
+      <p><strong>Phone</strong><br>{{ user.phone }}</p>
+      <p><strong>Address</strong><br>{{ user.address }}</p>
+      <p><strong>ZIP code</strong><br>{{ user.zip_code if user.zip_code is defined else '' }}</p>
+    </div>
+    <div class="profile-actions">
+      <a class="button button-secondary" href="{{ url_for('logout') }}">Logout</a>
+      <a class="button button-primary" href="{{ url_for('order_page') }}">Start Order</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Manage Orders &mdash; PizzaShop{% endblock %}
+{% block content %}
+<section class="section card-panel">
+  <header class="section-header">
+    <h1>Customer order history</h1>
+    <p>Review recent customer orders and handle cancellations or refunds.</p>
+  </header>
+  <nav class="local-nav" aria-label="Manager">
+    <a href="{{ url_for('manage_home') }}">Dashboard</a>
+    <a href="{{ url_for('manage_orders') }}" class="active">Orders</a>
+    <a href="{{ url_for('manage_menu') }}">Menu</a>
+    <a href="{{ url_for('manage_logout') }}">Logout</a>
+  </nav>
+
+  {% if orders %}
+    <div class="table-scroll">
+      <table class="manager-table">
+        <thead>
+          <tr>
+            <th>Order</th>
+            <th>Customer</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+            <tr>
+              <td>
+                <strong>#{{ order.short_id }}</strong><br>
+                <span>{{ order.created_at }}</span>
+                {% if order.confirmation_number %}
+                  <br><span>{{ order.confirmation_number }}</span>
+                {% endif %}
+              </td>
+              <td>
+                <strong>{{ order.customer_name }}</strong><br>
+                <span>{{ order.customer_phone }}</span><br>
+                <span>{{ order.delivery_address }} {{ order.delivery_zip_code }}</span>
+              </td>
+              <td>
+                <details>
+                  <summary>{{ order.item_count }} item{% if order.item_count != 1 %}s{% endif %}</summary>
+                  <ul class="summary-list">
+                    {% for item in order.cart_items %}
+                      <li>{{ item.name }} x {{ item.quantity }} - {{ format_money(item.line_total()) }}</li>
+                    {% endfor %}
+                  </ul>
+                </details>
+              </td>
+              <td>
+                <strong>{{ order.total }}</strong><br>
+                <span>Tax {{ order.tax }}</span>
+              </td>
+              <td>
+                <span class="status-pill status-{{ order.status_value }}">{{ order.status }}</span><br>
+                <span>{{ order.payment_status }}</span>
+              </td>
+              <td>
+                <div class="manager-actions">
+                  {% if order.can_cancel %}
+                    <form action="{{ url_for('manage_order_cancel', order_id=order.order_id) }}" method="post">
+                      <button type="submit" class="button button-secondary">Cancel</button>
+                    </form>
+                  {% endif %}
+                  {% if order.can_refund %}
+                    <form action="{{ url_for('manage_order_refund', order_id=order.order_id) }}" method="post">
+                      <button type="submit" class="button button-secondary">Refund</button>
+                    </form>
+                  {% endif %}
+                  {% if not order.can_cancel and not order.can_refund %}
+                    <span>{{ order.message }}</span>
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>No customer orders have been placed yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

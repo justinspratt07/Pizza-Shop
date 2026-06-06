@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Home — PizzaShop{% endblock %}
+{% block content %}
+<section class="hero" id="home">
+  <div class="hero-copy">
+    <p class="eyebrow">Fresh pizza. Simple ordering.</p>
+    <h1>Choose your pizza, review your cart, and place a mock order quickly.</h1>
+    <p>This merged version keeps the original registration and login features while adding the pizza ordering, cart, order total, and payment confirmation logic.</p>
+    <div class="hero-actions">
+      <a class="button button-primary" href="{{ url_for('order_page') }}">Start Order</a>
+      {% if session.get('user_email') %}
+        <a class="button button-secondary" href="{{ url_for('profile') }}">View Profile</a>
+      {% else %}
+        <a class="button button-secondary" href="{{ url_for('register') }}">Create Account</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="hero-image" aria-hidden="true">
+    <div class="pizza-card">
+      <h2>Featured</h2>
+      <p>Classic Cheese Pizza</p>
+      <p>$10.99</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="menu">
+  <header class="section-header">
+    <h2>Menu Highlights</h2>
+    <p>These items come from the ordering code that was originally in the notebook.</p>
+  </header>
+  <div class="feature-grid">
+    {% for item in menu_items %}
+      <article class="feature-card">
+        <h3>{{ item.name }}</h3>
+        <p>{{ item.description }}</p>
+        <p><strong>{{ format_money(item.price) }}</strong></p>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section" id="why">
+  <header class="section-header">
+    <h2>Why choose PizzaShop?</h2>
+    <p>Designed for accessibility, clarity, and quick ordering.</p>
+  </header>
+  <div class="grid-two">
+    <div>
+      <h3>Easy to scan</h3>
+      <p>The navigation and page layout make it easy to find the menu, account pages, and checkout flow.</p>
+    </div>
+    <div>
+      <h3>Simple account setup</h3>
+      <p>Register once and return later with a profile menu and logout option.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <header class="section-header">
+    <h2>Get started</h2>
+    <p>Use the order page to test successful and failed payment outcomes.</p>
+  </header>
+  <div class="footer-actions">
+    <a class="button button-primary" href="{{ url_for('order_page') }}">Order Now</a>
+    <a class="button button-secondary" href="{{ url_for('register') }}">Register</a>
+  </div>
+</section>
+{% endblock %}

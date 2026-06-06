@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Order Summary — PizzaShop{% endblock %}
+{% block content %}
+<section class="section card-panel">
+  <header class="section-header">
+    <h1>Order Summary</h1>
+    <p>{{ order.message }}</p>
+  </header>
+
+  <div class="summary-grid">
+    <div class="profile-card">
+      <h2>Status: {{ order.status }}</h2>
+      <p><strong>Order ID</strong><br>{{ order.order_id }}</p>
+      {% if order.confirmation_number %}
+        <p><strong>Confirmation Number</strong><br>{{ order.confirmation_number }}</p>
+      {% endif %}
+      <p><strong>Customer</strong><br>{{ order.customer.name }}</p>
+      <p><strong>Phone</strong><br>{{ order.phone_masked }}</p>
+      <p><strong>Address</strong><br>{{ order.customer.address }}</p>
+      <p><strong>ZIP code</strong><br>{{ order.customer.zip_code }}</p>
+    </div>
+
+    <div class="profile-card">
+      <h2>Items</h2>
+      <ul class="summary-list">
+        {% for item in order.cart_items %}
+          <li>{{ item.name }} x {{ item.quantity }} — {{ format_money(item.line_total()) }}</li>
+        {% endfor %}
+      </ul>
+      <div class="totals">
+        <p><span>Subtotal</span><strong>{{ order.subtotal }}</strong></p>
+        <p><span>Tax ({{ order.tax_rate }})</span><strong>{{ order.tax }}</strong></p>
+        <p><span>Total</span><strong>{{ order.total }}</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-actions">
+    <a class="button button-primary" href="{{ url_for('order_page') }}">Create Another Order</a>
+    <a class="button button-secondary" href="{{ url_for('home') }}">Back to Home</a>
+  </div>
+</section>
+{% endblock %}

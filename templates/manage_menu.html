@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Manage Menu — PizzaShop{% endblock %}
+{% block content %}
+<section class="section card-panel">
+  <header class="section-header">
+    <h1>Menu administration</h1>
+    <p>Add, update, or deactivate menu items.</p>
+  </header>
+  <nav class="local-nav" aria-label="Manager">
+    <a href="{{ url_for('manage_home') }}">Dashboard</a>
+    <a href="{{ url_for('manage_orders') }}">Orders</a>
+    <a href="{{ url_for('manage_menu') }}" class="active">Menu</a>
+    <a href="{{ url_for('manage_logout') }}">Logout</a>
+  </nav>
+
+  {% for item in menu_items %}
+  <details class="menu-card">
+    <summary>{{ item.name }} — {{ format_money(item.price) }}{% if not item.active %} <span class="status-inactive">(inactive)</span>{% endif %}</summary>
+    <div class="item-body">
+      <form class="form-grid" action="{{ url_for('manage_menu_update', item_id=item.item_id) }}" method="post">
+        <div class="form-field">
+          <label>Name</label>
+          <input name="name" type="text" value="{{ item.name }}" required />
+        </div>
+        <div class="form-field full-width">
+          <label>Description</label>
+          <input name="description" type="text" value="{{ item.description }}" />
+        </div>
+        <div class="form-field">
+          <label>Price ($)</label>
+          <input name="price" type="number" step="0.01" min="0" value="{{ item.price }}" required />
+        </div>
+        <div class="form-actions full-width">
+          <button type="submit" class="button button-primary">Save</button>
+        </div>
+      </form>
+      <form action="{{ url_for('manage_menu_toggle', item_id=item.item_id) }}" method="post">
+        <button type="submit" class="button button-secondary">
+          {% if item.active %}Deactivate{% else %}Activate{% endif %}
+        </button>
+      </form>
+    </div>
+  </details>
+  {% endfor %}
+
+  <section class="section">
+    <h2>Add a new item</h2>
+    <form class="form-grid" action="{{ url_for('manage_menu_add') }}" method="post">
+      <div class="form-field">
+        <label>Name</label>
+        <input name="name" type="text" required />
+      </div>
+      <div class="form-field full-width">
+        <label>Description</label>
+        <input name="description" type="text" />
+      </div>
+      <div class="form-field">
+        <label>Price ($)</label>
+        <input name="price" type="number" step="0.01" min="0" required />
+      </div>
+      <div class="form-actions full-width">
+        <button type="submit" class="button button-primary">Add item</button>
+      </div>
+    </form>
+  </section>
+</section>
+{% endblock %}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}PizzaShop{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script defer src="{{ url_for('static', filename='js/app.js') }}"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">PizzaShop</div>
+    <nav class="global-nav" aria-label="Primary">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('order_page') }}">Order</a>
+      <a href="{{ url_for('home') }}#why">Why Us</a>
+      {% if session.get('user_email') %}
+        <a href="{{ url_for('profile') }}">Profile</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('register') }}">Create Account</a>
+        <a href="{{ url_for('login') }}">Login</a>
+      {% endif %}
+      <a href="{{ url_for('manage_login') }}">Manager</a>
+      <a href="{{ url_for('home') }}#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <section class="flash-grid" aria-live="polite">
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </section>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-column">
+      <h2>Site Map</h2>
+      <ul>
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('order_page') }}">Order</a></li>
+        <li><a href="{{ url_for('home') }}#why">Why Us</a></li>
+        <li><a href="{{ url_for('register') }}">Create Account</a></li>
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+        <li><a href="{{ url_for('manage_login') }}">Manager Login</a></li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <p>PizzaShop helps customers order quickly with a simple, mobile-friendly layout.</p>
+      <p>Contact us: support@pizzashop.example</p>
+    </div>
+  </footer>
+</body>
+</html>

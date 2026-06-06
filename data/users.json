@@ -1,0 +1,9 @@
+[
+  {
+    "full_name": "test",
+    "email": "test@test.com",
+    "phone": "8888888888",
+    "address": "8888 google dr",
+    "password_hash": "fbdfe02819959b8961d71ce4e60c02df07687182be5888f34397767465288298"
+  }
+]
