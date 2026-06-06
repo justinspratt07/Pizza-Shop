@@ -1,5 +1,7 @@
 # PizzaShop Sprint 2 Submission Build
 
+A simple pizza ordering app, created with my group in my CompSci Team Project 2 course.
+
 ## Purpose
 
 This folder contains the Sprint 2 source code files and Windows launcher for the PizzaShop Flask application.
