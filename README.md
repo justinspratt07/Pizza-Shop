@@ -49,6 +49,18 @@ This folder contains the Sprint 2 source code files and Windows launcher for the
 
 ## How to Run the Application
 
+### Preview in GitHub Codespaces
+
+Click **Code > Codespaces > Create codespace on main**.
+
+When the Codespace opens, dependencies install automatically. Start the app with:
+
+```bash
+python server.py
+```
+
+Open the forwarded port `5000` preview to use the app in the browser.
+
 ### Windows Launcher
 
 Double-click:
